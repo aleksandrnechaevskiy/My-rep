@@ -1,0 +1,78 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# Load the passenger data
+passengers = pd.DataFrame(pd.read_csv('passengers.csv'))
+
+# Update sex column to numerical
+new_sex = []
+for i in passengers['Sex']:
+  if i == 'female':
+    new_sex.append(1)
+  elif i == 'male':
+    new_sex.append(0)
+passengers['Sex'] = new_sex
+#print(passengers['Sex'])
+# Fill the nan values in the age column
+passengers['Age'] = passengers['Age'].fillna((passengers['Age'].mean()))
+#print(passengers)
+# Create a first class column
+first = []
+for i in passengers['Pclass']:
+  if i == 1:
+    first.append(1)
+  else:
+    first.append(0)
+passengers['FirstClass'] = first
+
+# Create a second class column
+second = []
+for i in passengers['Pclass']:
+  if i == 2:
+    second.append(1)
+  else:
+    second.append(0)
+passengers['SecondClass'] = second
+#print(passengers)
+# Select the desired features
+x = passengers[{'Sex', 'Age', 'FirstClass', 'SecondClass'}]
+y = passengers['Survived'] 
+# Perform train, test, split
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.8, test_size = 0.2, random_state=6)
+
+# Scale the feature data so it has mean = 0 and standard deviation = 1
+scaler = StandardScaler()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
+# Create and train the model
+model = LogisticRegression()
+model.fit(x_train, y_train)
+
+# Score the model on the train data
+print(model.score(x_train, y_train))
+
+# Score the model on the test data
+print(model.score(x_test, y_test))
+
+# Analyze the coefficients
+print(model.coef_)
+
+# Sample passenger features
+Jack = np.array([0.0,20.0,0.0,0.0])
+Rose = np.array([1.0,17.0,1.0,0.0])
+You = np.array([0.0,30.0,1.0,0.0])
+
+# Combine passenger arrays
+sample_passengers = [Jack, Rose, You]
+
+# Scale the sample passenger features
+sample_passengers = scaler.transform(sample_passengers)
+#print(sample_passengers)
+
+# Make survival predictions!
+print(model.predict(sample_passengers))
