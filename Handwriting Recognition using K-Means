@@ -1,0 +1,49 @@
+import codecademylib3_seaborn
+import numpy as np
+from matplotlib import pyplot as plt
+from sklearn import datasets
+digits = datasets.load_digits()
+'''
+print(digits.target[100])
+plt.gray()
+plt.matshow(digits.images[100])
+plt.show()
+'''
+from sklearn.cluster import KMeans
+model = KMeans(n_clusters = 10, random_state = 19)
+model.fit(digits.data)
+fig = plt.figure(figsize = (8,3))
+fig.suptitle('Cluster Center Images', fontsize = 14, fontweight = 'bold')
+
+for i in range(10):
+  ax = fig.add_subplot(2, 5, 1+i)
+  ax.imshow(model.cluster_centers_[i].reshape((8, 8)), cmap=plt.cm.binary)
+plt.show()
+new_samples = np.array([
+[0.00,0.00,0.23,1.37,0.84,0.00,0.00,0.00,0.00,0.00,6.79,7.62,6.63,0.00,0.00,0.00,0.00,0.00,3.43,6.56,6.86,0.00,0.00,0.00,0.00,0.00,4.73,7.62,6.18,0.00,0.00,0.00,3.81,3.43,5.04,6.71,7.47,1.30,0.00,0.00,4.80,7.62,5.65,6.86,7.62,1.83,0.00,0.00,0.08,4.73,6.86,5.34,2.59,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00],
+[0.00,0.00,1.45,3.81,3.81,1.91,0.00,0.00,0.00,0.00,4.12,7.32,7.24,7.47,1.98,0.00,0.00,0.08,2.67,5.11,6.48,7.55,1.68,0.00,0.00,2.14,7.62,7.62,7.62,7.62,1.30,0.00,0.00,0.08,3.74,7.62,5.03,2.98,0.23,0.00,0.00,0.38,6.63,6.48,0.23,0.00,0.00,0.00,0.00,1.14,7.55,3.13,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00],
+[0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,3.74,7.09,6.41,0.00,0.00,0.00,0.08,4.50,7.62,5.95,2.98,0.00,0.00,0.00,1.91,7.62,7.01,2.59,0.08,0.00,0.00,0.00,3.05,7.62,7.62,7.62,2.21,0.00,0.00,0.00,2.59,7.62,7.62,7.62,1.75,0.00,0.00,0.00,0.15,4.35,7.40,5.26,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00],
+[0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.69,6.10,5.88,0.00,0.00,0.00,0.00,0.00,1.83,7.63,7.63,0.00,0.00,0.00,0.00,0.00,0.76,6.71,6.18,0.00,0.00,0.00,0.00,0.23,6.10,7.47,2.29,0.00,0.00,0.00,0.00,4.35,7.62,7.40,4.65,0.15,0.00,0.00,0.00,6.41,6.63,5.26,7.62,3.59,0.00,0.00,0.00,0.00,0.00,0.00,2.52,1.07,0.00,0.00]
+])
+new_labels = model.predict(new_samples)
+for i in range(len(new_labels)):
+  if new_labels[i] == 0:
+    print(2, end='')
+  elif new_labels[i] == 1:
+    print(1, end='')
+  elif new_labels[i] == 2:
+    print(3, end='')
+  elif new_labels[i] == 3:
+    print(5, end='')
+  elif new_labels[i] == 4:
+    print(4, end='')
+  elif new_labels[i] == 5:
+    print(0, end='')
+  elif new_labels[i] == 6:
+    print(6, end='')
+  elif new_labels[i] == 7:
+    print(9, end='')
+  elif new_labels[i] == 8:
+    print(7, end='')
+  elif new_labels[i] == 9:
+    print(1, end='')
